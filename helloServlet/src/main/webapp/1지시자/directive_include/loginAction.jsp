@@ -1,3 +1,4 @@
+<%@page import="utils.CookieManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,6 +12,12 @@
 	String id = request.getParameter("userid");
 	String pw = request.getParameter("userpw");
 	
+	String saveYN = request.getParameter("saveYN");
+
+	if("Y".equals(saveYN) && saveYN != null){
+		CookieManager.makeCookie(response, "userId", id, 3600);
+	}
+	
 	if("abc".equalsIgnoreCase(id)
 			&& "123".equals(pw)){
 		// 로그인 성공
@@ -23,6 +30,11 @@
 		// 로그인 실패
 		response.sendRedirect("gogreen.jsp?loginErr=Y");
 	}
+	
+	
+
+	
+	
 %>
 </body>
 </html>
