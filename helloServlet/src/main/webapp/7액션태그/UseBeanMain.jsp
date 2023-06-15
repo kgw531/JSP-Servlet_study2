@@ -29,6 +29,7 @@
 		name : 자바빈즈 이름
 		property : 필드명
 		value : 필드값
+		
 	 -->
 	
 	<jsp:setProperty property="name" name="person" value="하니"/>
