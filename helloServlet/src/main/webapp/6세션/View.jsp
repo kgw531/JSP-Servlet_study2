@@ -1,3 +1,4 @@
+<%@page import="dao.NewBoardDao"%>
 <%@page import="common.JSFunction"%>
 <%@page import="dao.BoardDao"%>
 <%@page import="dto.Board"%>
@@ -12,17 +13,18 @@
 	BoardDao dao = new BoardDao();
 	//게시글 1건을 조회 후 board 객체에 담아서 반환
 	Board board = dao.selectOne(request.getParameter("num"));
-	dao.updateVisitCount(request.getParameter("num"));
 	
 	if(board == null){
 		JSFunction.alertBack("게시글이 존재하지 않습니다.", out);
 		return;
 	}
+	
+	
 
 
 %>
 <script>
-	function deletPost(){
+	function deletePost(){
 		var res = confirm("삭제하시겠습니까?");
 		if(res){
 			location.href="DeleteProcess.jsp?num=<%= board.getNum()%>"
@@ -32,7 +34,7 @@
 </script>
 </head>
 <body>
-<jsp:include page="Link.jsp" />
+<jsp:include page="Link.jsp"/>
 
 <h2>회원제 게시판 - 상세보기(View)</h2>
 
@@ -56,7 +58,7 @@
 		</tr>
 		<tr height="200px">
 			<td >내용</td>
-			<td colspan='3'><%=board.getContent() %></td>
+			<td colspan='3'><%=board.getContent().replace("\r\n", "<br/>") %></td>
 		</tr>
 		<tr>
 			<td colspan='4' align="center">
@@ -67,20 +69,20 @@
 			<%} %>
 				<input type="button" onclick="location.href='Board.jsp'" value="목록보기">
 			<%
-				if(session.getAttribute("userId") != null && board.getId().equals(session.getAttribute("userId"))){			
-			%>
-							<button type="button" onclick="location.href='Edit.jsp?num=<%=board.getNum()%>>'")>수정하기</button>
-			<%} %>
+            if(session.getAttribute("userId") != null
+        	&& board.getId().equals(session.getAttribute("userId"))){
+        %>
+
+			<button type="button" onclick="location.href='Edit.jsp?num=<%= board.getNum()%>'">수정하기</button>
+			<button type="button" onclick="deletePost()">삭제하기</button>
+        
+        <%} %>
+        
 			</td>
 		</tr>
 	
 	</table>
 </form>
-
-
-
-
-
 
 </body>
 </html>

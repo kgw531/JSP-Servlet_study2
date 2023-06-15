@@ -18,7 +18,7 @@
 		scope : 저장될 영역
 		
 		dto패키지의 Person 객체를 생성 후 request영역에 저장(객체를 생성한 것과 같다)
-		액션태그를 통해 자바빈을 생성시 기본 생성자를 이용
+		액션태그를 통해 자바빈을 생성시 기본 생성자를 `이용
 		값을 세팅하기 위해 jsp:setProperty를 이용한다.
 	-->
 	<jsp:useBean id="person" class="dto.Person" scope="request"></jsp:useBean>
