@@ -1,3 +1,4 @@
+<%@page import="dto.Criteria"%>
 <%@page import="dto.Member"%>
 <%@page import="dto.Board"%>
 <%@page import="java.util.List"%>
@@ -16,6 +17,7 @@
 	request.setCharacterEncoding("utf-8");
 	String searchField = request.getParameter("searchField");
 	String searchWord = request.getParameter("searchWord");
+	String pageNo = request.getParameter("pageNo");
 	
 	// 검색어가 null이 아니면 검색기능을 추가!!
 	if(searchWord == null || "".equals(searchWord)){
@@ -26,9 +28,12 @@
 	BoardDao dao = new BoardDao();
 	
 	
-	List<Board> boardList = dao.getList(searchField,searchWord);
+	// List<Board> boardList = dao.getList(searchField,searchWord);
+	Criteria criteria = new Criteria(searchField,searchWord,pageNo);
+	List<Board> boardList = dao.getListPage(criteria);
+	int totalCnt = dao.getTotalCnt(criteria);
 	
-	int totalCnt = dao.getTotalCnt(searchField,searchWord);
+	
 
 %>
 
@@ -39,7 +44,8 @@
 총건수 : <%=totalCnt %>
 
 <!-- 검색폼 -->
-<form method="get">
+<form method="get" name = 'searchForm'>
+<input type='hidden' name = 'pageNo' value='<%= criteria.getPageNo()%>'>
 <table border="1" width="90%">
 	<tr >
 		<td align="center">
@@ -103,7 +109,16 @@
 <%} %>
 
 
-
+<%
+	PageDto pageDto = new PageDto(totalCnt,criteria);
+%>
+<table border="1" width="90%">
+	<tr>
+		<td align="center" >
+			<%@ include file="PageNavi.jsp" %>
+		</td>
+	</tr>
+</table>
 
 
 

@@ -10,6 +10,7 @@ import java.util.List;
 import common.ConnectionUtill;
 import common.DBconnPool;
 import dto.Board;
+import dto.Criteria;
 
 
 public class BoardDao {
@@ -80,11 +81,11 @@ public class BoardDao {
 	
 	}
 	// 게시글의 갯수를 반환합니다.
-	public int getTotalCnt(String searchField, String searchWord) {
+	public int getTotalCnt(Criteria criteria) {
 		int totalCnt = 0;
 		String sql = "select count(*) from board ";
-		if(searchWord != null && !"".equals(searchWord)) {
-			sql += "where "+searchField+" like '%"+searchWord +"%'";
+		if(criteria.getSearchWord() != null && !"".equals(criteria.getSearchWord())) {
+			sql += "where "+criteria.getSearchField()+" like '%"+criteria.getSearchWord() +"%'";
 		}
 		try(Connection conn = DBconnPool.getConnection();
 				PreparedStatement psmt = conn.prepareStatement(sql);) {
@@ -128,6 +129,45 @@ public class BoardDao {
 				boardList.add(board);
 			}
 
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace(); 
+		}
+		return boardList;
+	}
+	public List<Board> getListPage(Criteria criteria) {
+		List<Board> boardList = new ArrayList<Board>();
+		String sql = ""
+				+ "select * from("
+				
+				+ "select board.*, rownum rn from board ";
+		if(criteria.getSearchWord() != null && !"".equals(criteria.getSearchWord())) {
+			sql += "where "+criteria.getSearchField()+" like '%"+criteria.getSearchWord() +"%'";
+		}
+		sql += "order by num desc" + ")"
+				+"where rn between " + criteria.getStartNo()
+				+ " and " + criteria.getEndNo();
+		
+		
+		
+		
+		try(Connection conn = DBconnPool.getConnection();
+				PreparedStatement psmt = conn.prepareStatement(sql);) {
+			
+			ResultSet rs = psmt.executeQuery();
+			while(rs.next()){
+				Board board = new Board();
+				board.setNum(rs.getString("num"));
+				board.setTitle(rs.getString("title"));
+				board.setContent(rs.getString("content"));
+				board.setId(rs.getString("id"));
+				board.setPostdate(rs.getString("postdate"));
+				board.setVisitCount(rs.getString("visitcount"));
+				
+				boardList.add(board);
+			}
+			
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

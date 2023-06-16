@@ -1,7 +1,6 @@
-<%@page import="dao.NewBoardDao"%>
 <%@page import="common.JSFunction"%>
-<%@page import="dao.BoardDao"%>
 <%@page import="dto.Board"%>
+<%@page import="dao.BoardDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -11,7 +10,9 @@
 <title>Insert title here</title>
 <%
 	BoardDao dao = new BoardDao();
-	//게시글 1건을 조회 후 board 객체에 담아서 반환
+	dao.updateVisitCount(request.getParameter("num"));
+	// request.getParameter("num") : 조회하려는 게시글 번호
+	// 게시글 1건을 조회 후 board객체에 담아서 반환
 	Board board = dao.selectOne(request.getParameter("num"));
 	
 	if(board == null){
@@ -19,70 +20,76 @@
 		return;
 	}
 	
-	
-
-
 %>
 <script>
 	function deletePost(){
-		var res = confirm("삭제하시겠습니까?");
+		var res = confirm("삭제 하시겠습니까?");
 		if(res){
-			location.href="DeleteProcess.jsp?num=<%= board.getNum()%>"
+			location.href="DeleteProcess.jsp?num=<%=board.getNum()%>"
 		}
-		
 	}
 </script>
 </head>
 <body>
-<jsp:include page="Link.jsp"/>
+<%@include file="Link.jsp" %>
+<h2>상세보기</h2>
 
-<h2>회원제 게시판 - 상세보기(View)</h2>
-
-<form>
-	<table border=1 width="90%">
-		<tr>
-			<td>번호</td>
-			<td><%=board.getNum()%></td>
-			<td>작성자</td>
-			<td><%=board.getId() %></td>
-		</tr>
-		<tr>
-			<td>작성일</td>
-			<td><%=board.getPostdate() %></td>
-			<td>조회수</td>
-			<td><%=board.getVisitCount() %></td>
-		</tr>
-		<tr>
-			<td>제목</td>
-			<td colspan='3'><%=board.getTitle() %></td>
-		</tr>
-		<tr height="200px">
-			<td >내용</td>
-			<td colspan='3'><%=board.getContent().replace("\r\n", "<br/>") %></td>
-		</tr>
-		<tr>
-			<td colspan='4' align="center">
-			<%
-				if(session.getAttribute("userId") != null && board.getId().equals(session.getAttribute("userId"))){			
-			%>
-							<button type="button" onclick="">삭제하기</button>
-			<%} %>
-				<input type="button" onclick="location.href='Board.jsp'" value="목록보기">
-			<%
-            if(session.getAttribute("userId") != null
-        	&& board.getId().equals(session.getAttribute("userId"))){
-        %>
-
-			<button type="button" onclick="location.href='Edit.jsp?num=<%= board.getNum()%>'">수정하기</button>
-			<button type="button" onclick="deletePost()">삭제하기</button>
-        
-        <%} %>
-        
-			</td>
-		</tr>
-	
-	</table>
-</form>
-
+	<table border="1" width="90%">
+        <tr>
+            <td>번호</td>
+            <td><%= board.getNum() %></td>
+            <td>작성자</td>
+            <td><%= board.getId() %></td>
+        </tr>
+        <tr>
+            <td>작성일</td>
+            <td><%= board.getPostdate() %></td>
+            <td>조회수</td>
+            <td><%= board.getVisitCount() %></td>
+        </tr>
+        <tr>
+            <td>제목</td>
+            <td colspan="3"><%= board.getTitle() %></td>
+        </tr>
+        <tr>
+            <td>내용</td>
+            <td colspan="3" height="100">
+                <%= board.getContent().replace("\r\n", "<br/>") %></td> 
+        </tr>
+        <tr>
+            <td colspan="4" align="center">
+            
+                <button type="button" onclick="location.href='Board.jsp';">
+                    목록 보기
+                </button>
+                
+                <%
+                // 로그인한 아이디와 글쓴이가 같으면 수정,삭제 버튼 활성화
+                if(session.getAttribute("userId") != null
+                	&& board.getId().equals(session.getAttribute("userId"))){
+                %>
+    <button type="button" 
+    	onclick="location.href='Edit.jsp?num=<%=board.getNum()%>'">수정하기</button>
+    <button type="button" 
+    	onclick="deletePost()">삭제하기</button>
+                
+                <%} %>
+                
+            </td>
+        </tr>
+    </table>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

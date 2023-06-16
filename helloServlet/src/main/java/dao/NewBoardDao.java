@@ -48,42 +48,62 @@ public class NewBoardDao {
 		return list;
 	}
 	public List<Board> getListPage(Criteria criteria){
-		List<Board> list = new ArrayList<>();
-		
-		String sql = "select * FROM("
-				+ "    select rownum rn, t.* from("
-				+ "    select NUM,TITLE,CONTENT,ID, decode(trunc(sysdate),trunc(POSTDATE),"
-				+ "    to_char(POSTDATE,'hh24:mi:ss'),to_char(POSTDATE,'yyyy-mm-dd')),visitcount from board";
+		List<Board> boardList = new ArrayList<Board>();
+		String sql = ""
+				+ "select * from("
 				
-		
-		if(criteria.getSearchWord() != null && !"".equals(criteria.getSearchWord())){
-			sql += " where " + criteria.getSearchField()+ " like " + "'%"+ criteria.getSearchWord() +"%'";
+				+ "select board.*, rownum rn from board ";
+		if(criteria.getSearchWord() != null && !"".equals(criteria.getSearchWord())) {
+			sql += "where "+criteria.getSearchField()+" like '%"+criteria.getSearchWord() +"%'";
 		}
+		sql += "order by num desc" + ")"
+				+"where rn between " + criteria.getStartNo()
+				+ " and " + criteria.getEndNo();
 		
-		sql += " order by num desc"
-				+ "    )t"
-				+ ")"
-				
-				+ "where rn between "+ criteria.getStartNo() +" and "+ criteria.getEndNo() +"";
+		
+		
 		
 		try(Connection conn = DBconnPool.getConnection();
-				PreparedStatement psmt = conn.prepareStatement(sql);){
+				PreparedStatement psmt = conn.prepareStatement(sql);) {
+			
 			ResultSet rs = psmt.executeQuery();
-			while(rs.next()) {
-				String num = rs.getString(2);
-				String title = rs.getString(3);
-				String content = rs.getString(4);
-				String id = rs.getString(5);
-				String postdate = rs.getString(6);
-				String visitcount = rs.getString(7);
-				Board board = new Board(num,title,content,id,postdate,visitcount);
-				list.add(board);				
-			}	
+			while(rs.next()){
+				Board board = new Board();
+				board.setNum(rs.getString("num"));
+				board.setTitle(rs.getString("title"));
+				board.setContent(rs.getString("content"));
+				board.setId(rs.getString("id"));
+				board.setPostdate(rs.getString("postdate"));
+				board.setVisitCount(rs.getString("visitcount"));
+				
+				boardList.add(board);
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace(); 
+		}
+		return boardList;
+	}
+	
+	public int getTotalCnt(Criteria criteria) {
+		int totalCnt = 0;
+		String sql = "select count(*) from board ";
+		if(criteria.getSearchWord() != null && !"".equals(criteria.getSearchWord())) {
+			sql += "where "+criteria.getSearchField()+" like '%"+criteria.getSearchWord() +"%'";
+		}
+		try(Connection conn = DBconnPool.getConnection();
+				PreparedStatement psmt = conn.prepareStatement(sql);) {
+			ResultSet rs = psmt.executeQuery();
+			rs.next();
+			totalCnt = rs.getInt(1);
+			rs.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return list;
+		return totalCnt;
 	}
 	
 	public int insert(Board board) {

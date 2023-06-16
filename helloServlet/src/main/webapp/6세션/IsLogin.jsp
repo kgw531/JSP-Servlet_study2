@@ -12,7 +12,7 @@
 %>
 		<script>
 			alert("세션이 만료되었습니다.");
-			login.href="LoginForm.jsp";
+			login.href="/helloServlet/6세션/LoginForm.jsp";
 		</script>
 <% 		
 	}
