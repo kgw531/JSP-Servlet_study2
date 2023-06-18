@@ -17,7 +17,7 @@
    String content = request.getParameter("content");
    String num = request.getParameter("num");
    
-   String id = session.getAttribute("UserId").toString();
+   String id = (String)session.getAttribute("userId");
    
    Board board = new Board(num, title, content, id,"", "");
    BoardDao dao = new BoardDao();
@@ -27,7 +27,7 @@
    if(res > 0){
       JSFunction.alertLocation("수정 되었습니다.", "View.jsp?num="+num, out);
    } else {
-      JSFunction.alertBack("수정작업 중 오류가 발생 하였습니다.", out);
+     JSFunction.alertBack("수정작업 중 오류가 발생 하였습니다.", out);
    }
 %>
 </body>

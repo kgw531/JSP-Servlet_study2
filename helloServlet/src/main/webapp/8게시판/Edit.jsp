@@ -10,12 +10,13 @@
 <title>회원제 게시판</title>
 <%
    NewBoardDao dao = new NewBoardDao();
-   Board board = dao.selectOne(request.getParameter("num"));
+   String num = request.getParameter("num");
+   Board board = dao.selectOne(num);
 %>
 </head>
 <body>
 <h2>회원제 게시판 - 수정하기(Edit)</h2>
-<form action="EditProcess.jsp" method="post">
+<form action="EditProcess.jsp?num=<%= num%>" method="post">
     <table border="1" width="90%">
         <tr>
             <td>제목</td>
