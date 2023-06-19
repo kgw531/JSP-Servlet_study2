@@ -12,14 +12,14 @@ public class Board {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Board(String num, String title, String content, String id, String postdate, String visitCount) {
+	public Board(String num, String title, String content, String id, String postdate, String visitcount) {
 		super();
 		this.num = num;
 		this.title = title;
 		this.content = content;
 		this.id = id;
 		this.postdate = postdate;
-		this.visitcount = visitCount;
+		this.visitcount = visitcount;
 	}
 
 	public String getNum() {
@@ -66,8 +66,8 @@ public class Board {
 		return visitcount;
 	}
 
-	public void setVisitCount(String visitCount) {
-		this.visitcount = visitCount;
+	public void setVisitCount(String visitcount) {
+		this.visitcount = visitcount;
 	}
 
 }
