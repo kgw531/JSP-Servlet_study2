@@ -7,11 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-</head>
+</head>	
 <body>
 <script>
 	function go(page){
-		location.href="PageNavi.jsp?pageNo="+page;
+		location.href="../9페이지/PageNavi.jsp?pageNo="+page;
 	}
 </script>
 <%

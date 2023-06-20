@@ -23,7 +23,7 @@
 	pageContext.setAttribute("nullStr", null);
 	pageContext.setAttribute("emptyStr", "");
 	pageContext.setAttribute("lengthZero", new Integer[0]);
-	pageContext.setAttribute("sizeZero", new ArrayList());
+	pageContext.setAttribute("sizeZero", new ArrayList<>());
 %>
 
 <h2>empty 연산자</h2>
