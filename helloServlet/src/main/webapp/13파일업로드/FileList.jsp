@@ -26,11 +26,8 @@
 		<th>작성일</th>
 		<th></th>
 	<tr>
-	<%
-	FileDao dao = new FileDao();
-	List<FileDto> list = dao.getFileList();
-	%>
-	<c:set var="fileList" value="<%=list %>"/>
+	
+	<c:set var="fileList" value="${requestScope.list }"/>
 	<c:forEach items="${fileList }" var="dto">
 	<tr>
 		<td>${dto.idx}</td>
@@ -41,7 +38,7 @@
 		<td>${dto.sfile}</td>
 		<td>${dto.postdate}</td>
 		<td>
-			<a href="Download.jsp?oName=${dto.ofile }&Name=${fileDto.sfile } }">다운로드</a>
+			<a href="Download.jsp?oName=${dto.ofile }&sName=${dto.sfile }">다운로드</a>
 		</td>
 	</tr>
 	</c:forEach>

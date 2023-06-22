@@ -11,7 +11,18 @@
 </head>
 <body>
 <!-- 
-	붙여넣기
+	formatNumber
+    	var 	: 변수명 (변수명을 지정하지 않으면 바로 출력)
+    	value 	: 출력할 숫자
+    	pattern : 숫자패턴
+    	scope 	: 영역
+    	
+    	type 	: 출력양식을 설정
+    		- percent 	: 퍼센트
+    		- currency 	: 통화
+    		- number 	: 기본값, 일반숫자
+    
+    	groupingUsed : 구분기호 사용여부
  -->
  <c:set var="num" value="12345"/>
  <h4>숫자 포맷 설정</h4>

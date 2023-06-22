@@ -40,7 +40,7 @@
 <li>${initParam.OracleDriver }</li>
 
 <h3>컨텍스트 루트 경로 읽기</h3>
-<li>${pageContext.request.contextPath }</li>
+<li>${pageContext.request.contextPath }
 
 
 
