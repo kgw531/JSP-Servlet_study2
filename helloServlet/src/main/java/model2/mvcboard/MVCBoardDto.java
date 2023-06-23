@@ -1,4 +1,4 @@
-package dto;
+package model2.mvcboard;
 
 public class MVCBoardDto {
 	private String idx;

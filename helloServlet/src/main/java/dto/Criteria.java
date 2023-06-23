@@ -45,12 +45,12 @@ public class Criteria {
 
 	public Criteria(String searchField, String searchWord, String pageNoStr) {
 	      
-	      if(searchWord != null) {         
+	      if(searchWord != null && !"".equals(searchWord)) {         
 	         this.searchField = searchField;
 	         this.searchWord = searchWord;
 	      }
 	      
-	      if(pageNoStr != null) {
+	      if(pageNoStr != null && !"".equals(pageNoStr)) {
 	         pageNo = Integer.parseInt(pageNoStr);
 
 	         if(pageNo > 0) {
