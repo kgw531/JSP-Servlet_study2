@@ -17,14 +17,14 @@ public class ListController extends HttpServlet{
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// 리스트 조회
-
-		MVCBoardDao dao = new MVCBoardDao();
 		
-	
+		// 리스트 조회
+		MVCBoardDao dao = new MVCBoardDao();
 		String searchField = req.getParameter("searchField");
 		String searchWord = req.getParameter("searchWord");
 		String pageNo = req.getParameter("pageNo");
+		
+	
 		//검색어, 페이지 정보 세팅
 		Criteria cri = new Criteria(searchField,searchWord,pageNo);
 		
